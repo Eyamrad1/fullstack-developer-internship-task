@@ -20,7 +20,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NotBlank(message = "Task name cannot be empty")
-    String Name;
+    String name;
     boolean completed;
     @CreationTimestamp
     LocalDateTime createdDate;
@@ -34,11 +34,11 @@ public class Task {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public boolean isCompleted() {
