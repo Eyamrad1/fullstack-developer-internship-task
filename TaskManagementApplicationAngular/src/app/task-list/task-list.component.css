@@ -1,0 +1,241 @@
+/* Global Styling */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: #f5f5f5; /* Soft neutral background */
+}
+
+/* Task Manager Card */
+.task-manager-card {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: #ffffff; /* Clean, white background for the card */
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.title {
+  color: #5a2a8d; /* Sophisticated, muted purple */
+  font-weight: 700;
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.add-button {
+  background: #43a047; /* Professional green for the add button */
+  border: none;
+  padding: 0.8rem 1.5rem;
+  color: white;
+  transition: transform 0.2s ease;
+  border-radius: 6px;
+}
+
+.add-button:hover {
+  transform: translateY(-2px);
+  background: #388e3c; /* Darker green for hover */
+}
+
+/* Table */
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: #f3f3f3; /* Light grey header */
+  color: #5a2a8d; /* Purple text for header */
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+  transition: background-color 0.2s ease;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #fafafa; /* Light grey hover effect */
+}
+
+/* Dialog */
+::ng-deep .p-dialog .p-dialog-header {
+  background: #f3f3f3;
+  color: purple;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+  padding: 2rem;
+  background: #f3f3f3;
+  overflow: hidden; /* Prevent content from overflowing */
+}
+
+::ng-deep .p-dialog .p-field label {
+  font-size: 1.1rem;
+  color: #333333; /* Dark grey labels */
+  font-weight: 600;
+}
+
+::ng-deep .p-dialog .p-field input,
+::ng-deep .p-dialog .p-checkbox {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e7e7e7;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+::ng-deep .p-dialog .p-button {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+::ng-deep .p-dialog .p-button-success {
+  background: #43a047; /* Green for success button */
+  color: white;
+}
+
+::ng-deep .p-dialog .p-button-secondary {
+  background: #f8f8f8; /* Light grey for secondary button */
+  color: #333333;
+}
+
+::ng-deep .p-dialog .p-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Add new task heading */
+.add-task-title {
+  font-size: 2.2rem;
+  color: #333333; /* Dark grey for titles */
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Checkbox Styling */
+::ng-deep .p-checkbox .p-checkbox-box {
+  border-color: #333333;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  background: #5a2a8d; /* Purple highlight */
+  border-color: #333333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* General adjustments for mobile */
+  .container {
+    padding: 1rem;
+  }
+
+  .task-manager-card {
+    max-width: 100%;
+    margin: 0 1rem; /* Add some margin for mobile */
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 2rem; /* Reduce title size for mobile */
+  }
+
+  .add-button {
+    padding: 0.6rem 1.2rem;
+  }
+
+  /* Dialog adjustment */
+  ::ng-deep .p-dialog {
+    width: 90vw !important; /* Ensure dialog fits on mobile */
+    height: auto !important;
+  }
+
+  ::ng-deep .p-dialog .p-dialog-header {
+    font-size: 1.6rem; /* Smaller font for mobile headers */
+  }
+
+  ::ng-deep .p-dialog .p-dialog-content {
+    padding: 1rem; /* Less padding on mobile */
+  }
+
+  ::ng-deep .p-datatable {
+    font-size: 0.9rem; /* Reduce font size for tables */
+  }
+
+  ::ng-deep .p-button {
+    padding: 0.5rem 1rem;
+  }
+
+  /* Adjust table layout for small screens */
+  ::ng-deep .p-datatable .p-datatable-thead {
+    font-size: 0.9rem; /* Smaller font for header */
+  }
+
+  ::ng-deep .p-datatable .p-datatable-tbody {
+    font-size: 0.8rem; /* Smaller font for body */
+  }
+}
+
+/* Tablet Landscape (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .task-manager-card {
+    margin: 0 1rem; /* Some margin for tablet */
+  }
+
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .add-button {
+    padding: 0.8rem 1.4rem;
+  }
+
+  ::ng-deep .p-dialog {
+    width: 75vw !important;
+  }
+}
+
+/* Desktop - Default Layout */
+@media (min-width: 1024px) {
+  .container {
+    padding: 3rem; /* More padding on large screens */
+  }
+
+  .task-manager-card {
+    max-width: 1200px;
+  }
+
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-size: 2.5rem; /* Larger title font for desktops */
+  }
+
+  .add-button {
+    padding: 0.8rem 1.6rem;
+  }
+
+  ::ng-deep .p-datatable {
+    font-size: 1rem; /* Standard font size for tables */
+  }
+}
