@@ -1,5 +1,6 @@
 package com.example.taskmanagementapplication.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +25,8 @@ public class Task {
     String name;
     boolean completed;
     @CreationTimestamp
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime createdDate;
 
     public Long getId() {
@@ -54,7 +58,6 @@ public class Task {
     }
 
     public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+        // Do nothing, as the createdDate is automatically set by Hibernate
     }
-
 }

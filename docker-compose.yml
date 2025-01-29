@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   backend:
@@ -12,6 +12,16 @@ services:
     networks:
       - app-network
 
+  frontend:
+    build:
+      context: C:/Users/Lenovo/IdeaProjects/TaskManagementApplicationAngular
+    container_name: frontend-container
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
 
 networks:
   app-network:
