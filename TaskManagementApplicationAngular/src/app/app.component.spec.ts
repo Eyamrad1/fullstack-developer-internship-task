@@ -7,7 +7,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         AppComponent,
-        HttpClientTestingModule // Add HTTP client testing module
+        HttpClientTestingModule
       ],
     }).compileComponents();
   });
@@ -29,7 +29,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
 
-    // Add explicit index to target the correct <h1>
+
     const h1Elements = compiled.querySelectorAll('h1');
     expect(h1Elements[1]?.textContent).toContain('Hello, TaskManagementApplicationAngular');
   });

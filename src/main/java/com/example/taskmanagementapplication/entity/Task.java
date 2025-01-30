@@ -58,6 +58,6 @@ public class Task {
     }
 
     public void setCreatedDate(LocalDateTime createdDate) {
-        // Do nothing, as the createdDate is automatically set by Hibernate
+
     }
 }

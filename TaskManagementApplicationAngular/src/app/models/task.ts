@@ -3,4 +3,5 @@ export interface Task {
   name: string;
   completed: boolean;
   createdDate?:  Date;
+  isNew?: boolean;
 }

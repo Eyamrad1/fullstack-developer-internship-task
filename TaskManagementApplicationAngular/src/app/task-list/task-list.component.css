@@ -1,241 +1,358 @@
-/* Global Styling */
+:root {
+  /* Color Scheme */
+  --primary-color: #4F46E5;
+  --secondary-color: #EF4444;
+  --success-color: #10B981;
+  --background: #F9FAFB;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --border-color: #E5E7EB;
+  --hover-bg: #F3F4F6;
+}
+
+/* Global Styles */
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   padding: 2rem;
-  background: #f5f5f5; /* Soft neutral background */
+  background: var(--background);
+  min-height: 100vh;
 }
 
-/* Task Manager Card */
-.task-manager-card {
-  width: 100%;
-  max-width: 1200px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  border: none;
-  background: #ffffff; /* Clean, white background for the card */
-}
-
-/* Header */
+/* Header Section */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 8px;
 }
 
 .title {
-  color: #5a2a8d; /* Sophisticated, muted purple */
+  color: var(--primary-color);
+  font-size: 2.25rem;
   font-weight: 700;
   margin: 0;
-  font-size: 2.5rem;
 }
 
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Add Task Button */
 .add-button {
-  background: #43a047; /* Professional green for the add button */
+  background: var(--primary-color);
+  color: white !important;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
   border: none;
-  padding: 0.8rem 1.5rem;
-  color: white;
-  transition: transform 0.2s ease;
-  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .add-button:hover {
-  transform: translateY(-2px);
-  background: #388e3c; /* Darker green for hover */
+  background: #4338CA;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
 }
 
-/* Table */
-::ng-deep .p-datatable .p-datatable-thead > tr > th {
-  background: #f3f3f3; /* Light grey header */
-  color: #5a2a8d; /* Purple text for header */
+/* Filter Section */
+.filter-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filter-group, .search-group {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.filter-group:hover, .search-group:hover {
+  border-color: var(--primary-color);
+}
+
+.pi-filter, .pi-search {
+  color: var(--text-secondary);
+}
+
+/* Table Styles */
+.modern-table {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modern-table th {
+  background: var(--background);
+  color: var(--text-primary);
   font-weight: 600;
-  border-bottom: 2px solid #ddd;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  padding: 1rem 1.25rem;
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr {
-  transition: background-color 0.2s ease;
+.modern-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-  background-color: #fafafa; /* Light grey hover effect */
+.modern-table tr:last-child td {
+  border-bottom: none;
 }
 
-/* Dialog */
+.modern-table tr:hover {
+  background: var(--hover-bg) !important;
+}
+
+/* Status Labels */
+.status-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.status-label.completed {
+  background: #ECFDF5;
+  color: #059669;
+}
+
+.status-label.completed:before {
+  content: '🎉';
+  margin-right: 0.5rem;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+.status-label.pending {
+  background: #FEF2F2;
+  color: #DC2626;
+}
+
+.status-label.pending:before {
+  content: '⏳';
+  margin-right: 0.5rem;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+/* Action Buttons */
+.actions button {
+  margin: 0 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.actions button:hover {
+  transform: scale(1.1);
+}
+
+/* Dialog Styles */
+/* Dialog Enhancements */
 ::ng-deep .p-dialog .p-dialog-header {
-  background: #f3f3f3;
-  color: purple;
-  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #6366F1 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+::ng-deep .p-dialog .p-dialog-header:after {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+::ng-deep .p-dialog .p-dialog-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+::ng-deep .p-dialog .p-dialog-title:before {
+  content: '📋';
   font-size: 1.8rem;
-  text-align: center;
 }
 
 ::ng-deep .p-dialog .p-dialog-content {
   padding: 2rem;
-  background: #f3f3f3;
-  overflow: hidden; /* Prevent content from overflowing */
+  background: #f8fafc;
 }
 
-::ng-deep .p-dialog .p-field label {
-  font-size: 1.1rem;
-  color: #333333; /* Dark grey labels */
-  font-weight: 600;
+.input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
-::ng-deep .p-dialog .p-field input,
-::ng-deep .p-dialog .p-checkbox {
+.input-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-group label:before {
+  content: '✏️';
+  font-size: 1.2rem;
+}
+
+.task-input {
   width: 100%;
-  border-radius: 6px;
-  border: 1px solid #e7e7e7;
-  padding: 0.8rem;
-  margin-top: 0.5rem;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
 }
 
-::ng-deep .p-dialog .p-button {
-  margin-top: 1.5rem;
-  font-weight: 600;
+.task-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+  transform: translateY(-1px);
 }
 
-::ng-deep .p-dialog .p-button-success {
-  background: #43a047; /* Green for success button */
-  color: white;
+.status-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
-::ng-deep .p-dialog .p-button-secondary {
-  background: #f8f8f8; /* Light grey for secondary button */
-  color: #333333;
-}
-
-::ng-deep .p-dialog .p-button:hover {
+.status-group:hover {
+  border-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
-/* Add new task heading */
-.add-task-title {
-  font-size: 2.2rem;
-  color: #333333; /* Dark grey for titles */
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-/* Checkbox Styling */
 ::ng-deep .p-checkbox .p-checkbox-box {
-  border-color: #333333;
+  border: 2px solid ;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
-  background: #5a2a8d; /* Purple highlight */
-  border-color: #333333;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+::ng-deep .p-dialog .p-dialog-footer {
+  padding: 1.5rem;
+  border-top: 2px solid var(--border-color);
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #6366F1 100%) !important;
+  border: none !important;
+  padding: 0.875rem 2rem !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.save-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+}
+
+.p-button-outlined {
+  border: 2px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Celebration animation */
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1); }
+}
+
+.completed .p-checkbox-icon {
+  animation: celebrate 0.6s ease;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed var(--border-color);
+}
+
+.empty-state .pi-inbox {
+  color: var(--text-secondary);
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/*Pagination*/
+::ng-deep .p-paginator {
+  background: var(--background);
+  border: none;
+  margin-top: 1rem;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--primary-color);
+  color: white;
+  border-radius: 6px;
+}
+
+::ng-deep .p-paginator .p-paginator-element {
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+::ng-deep .p-paginator .p-paginator-element:hover {
+  background: var(--hover-bg);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  /* General adjustments for mobile */
   .container {
     padding: 1rem;
-  }
-
-  .task-manager-card {
-    max-width: 100%;
-    margin: 0 1rem; /* Add some margin for mobile */
   }
 
   .header {
     flex-direction: column;
     gap: 1rem;
-    text-align: center;
+    padding: 1.5rem;
   }
 
-  .title {
-    font-size: 2rem; /* Reduce title size for mobile */
+  .filter-section {
+    flex-direction: column;
   }
 
-  .add-button {
-    padding: 0.6rem 1.2rem;
-  }
-
-  /* Dialog adjustment */
-  ::ng-deep .p-dialog {
-    width: 90vw !important; /* Ensure dialog fits on mobile */
-    height: auto !important;
-  }
-
-  ::ng-deep .p-dialog .p-dialog-header {
-    font-size: 1.6rem; /* Smaller font for mobile headers */
-  }
-
-  ::ng-deep .p-dialog .p-dialog-content {
-    padding: 1rem; /* Less padding on mobile */
-  }
-
-  ::ng-deep .p-datatable {
-    font-size: 0.9rem; /* Reduce font size for tables */
-  }
-
-  ::ng-deep .p-button {
-    padding: 0.5rem 1rem;
-  }
-
-  /* Adjust table layout for small screens */
-  ::ng-deep .p-datatable .p-datatable-thead {
-    font-size: 0.9rem; /* Smaller font for header */
-  }
-
-  ::ng-deep .p-datatable .p-datatable-tbody {
-    font-size: 0.8rem; /* Smaller font for body */
-  }
-}
-
-/* Tablet Landscape (768px to 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .task-manager-card {
-    margin: 0 1rem; /* Some margin for tablet */
-  }
-
-  .header {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .add-button {
-    padding: 0.8rem 1.4rem;
-  }
-
-  ::ng-deep .p-dialog {
-    width: 75vw !important;
-  }
-}
-
-/* Desktop - Default Layout */
-@media (min-width: 1024px) {
-  .container {
-    padding: 3rem; /* More padding on large screens */
-  }
-
-  .task-manager-card {
-    max-width: 1200px;
-  }
-
-  .header {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .title {
-    font-size: 2.5rem; /* Larger title font for desktops */
-  }
-
-  .add-button {
-    padding: 0.8rem 1.6rem;
-  }
-
-  ::ng-deep .p-datatable {
-    font-size: 1rem; /* Standard font size for tables */
+  .modern-table {
+    font-size: 0.875rem;
   }
 }

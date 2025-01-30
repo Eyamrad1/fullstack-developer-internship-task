@@ -1,115 +1,103 @@
+<!-- task-list.component.html -->
 <div class="container">
   <p-card class="task-manager-card">
+    <!-- Header Section -->
     <div class="header">
-      <h1 class="title">Task Manager</h1>
-      <button
-        pButton
-        icon="pi pi-plus"
-        label="New Task"
-        class="add-button"
-        (click)="openNewTaskDialog()"
-      ></button>
+      <div class="header-content">
+        <h1 class="title">Task Manager</h1>
+        <p class="subtitle">Organize Your Work Efficiently</p>
+      </div>
+      <div class="header-actions">
+        <button pButton icon="pi pi-plus" label="New Task"
+                class="add-button" (click)="openNewTaskDialog()"></button>
+      </div>
     </div>
 
     <!-- Filter Section -->
-    <div class="filters">
-      <label for="statusFilter">Filter by Status:</label>
-      <input
-        id="statusFilter"
-        type="text"
-        (input)="onFilter($event, 'completed')"
-        placeholder="Enter 'Completed' or 'Pending'"
-      />
+    <div class="filter-section">
+      <div class="filter-group">
+        <span class="pi pi-filter"></span>
+        <p-dropdown [options]="statusOptions" [(ngModel)]="selectedStatus"
+                    placeholder="Filter by Status" (onChange)="filterTasks()"
+                    class="status-filter"></p-dropdown>
+      </div>
+      <div class="search-group">
+        <span class="pi pi-search"></span>
+        <input type="text" pInputText placeholder="Search tasks..."
+               [(ngModel)]="searchText" (input)="onSearch($event)" class="search-input">
+      </div>
     </div>
 
-    <!-- Task Table with Sorting and Filtering -->
-    <p-table
-      [value]="filteredTasks"
-      [paginator]="true"
-      [rows]="5"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      class="p-datatable-striped"
-      [responsive]="true"
-      [globalFilterFields]="['name', 'createdDate']"
-      [(first)]="first"
-      [totalRecords]="totalRecords"
-    >
+
+    <p-table [value]="filteredTasks"
+             [paginator]="true"
+             [rows]="5"
+    styleClass="modern-table"
+    [responsive]="true">
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="name">
-            Task Name
-            <p-sortIcon field="name"></p-sortIcon>
-
-          </th>
-          <th>Status</th>
-          <th pSortableColumn="createdDate">
-            Created Date
-            <p-sortIcon field="createdDate"></p-sortIcon>
-
-
-          </th>
+          <th pSortableColumn="name">Task <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+          <th pSortableColumn="createdDate">Date Created <p-sortIcon field="createdDate"></p-sortIcon></th>
           <th>Actions</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-task>
         <tr>
-          <td>{{ task.name }}</td>
+          <td>{{task.name}}</td>
           <td>
-            <p-checkbox
-              [ngModel]="task.completed"
-              (ngModelChange)="onStatusChange(task, $event)"
-              [binary]="true"
-            ></p-checkbox>
-            <span>{{ task.completed ? 'Completed' : 'Pending' }}</span>
+            <p-checkbox [ngModel]="task.completed"
+                        (onChange)="onStatusChange(task, $event.checked)"
+                        [binary]="true"></p-checkbox>
+            <span class="status-label"
+                  [class.completed]="task.completed"
+                  [class.pending]="!task.completed">
+        {{task.completed ? 'Completed' : 'Pending'}}
+      </span>
           </td>
-          <td>{{ task.createdDate | date: 'short' }}</td>
-          <td>
-            <button
-              pButton
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-warning"
-              (click)="editTask(task)"
-            ></button>
-            <button
-              pButton
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger"
-              (click)="confirmDelete(task)"
-            ></button>
+          <td>{{task.createdDate | date: 'MMM d, y, h:mm a'}}</td>
+          <td class="actions">
+            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text" (click)="editTask(task)"></button>
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text" (click)="confirmDelete(task)"></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="empty-state">
+            <span class="pi pi-inbox"></span>
+            <h3>No tasks found</h3>
+            <p>Start by creating your first task</p>
           </td>
         </tr>
       </ng-template>
     </p-table>
 
-    <!-- Task Dialog (New Design) -->
-    <p-dialog
-      [(visible)]="taskDialog"
-      [style]="{ width: '90vw', maxWidth: '500px' }"
-      [modal]="true"
-      [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
-    >
-      <h2 class="p-dialog-header">Manage Task</h2>
-      <div class="p-dialog-content">
-        <div class="p-field">
-          <label for="name">Task Name</label>
-          <input id="name" type="text" placeholder="Enter task name..." pInputText [(ngModel)]="task.name" required />
+    <p-dialog [(visible)]="taskDialog" header="Manage Task"
+              [style]="{ width: '90vw', maxWidth: '600px' }">
+      <div class="dialog-content">
+        <div class="input-group">
+          <label>Task Name</label>
+          <input type="text" pInputText [(ngModel)]="task.name"
+                 placeholder="Enter task name..." class="task-input">
         </div>
-        <div class="p-field">
-          <label for="completed">Completed</label>
-          <p-checkbox id="completed" [(ngModel)]="task.completed" [binary]="true"></p-checkbox>
+        <div class="status-group">
+          <p-checkbox [(ngModel)]="task.completed" [binary]="true"></p-checkbox>
+          <label>Completed</label>
         </div>
       </div>
-      <div class="p-dialog-footer">
-        <button pButton label="Cancel" icon="pi pi-times" class="p-button-danger" (click)="taskDialog = false"></button>
-        <button pButton label="Save" icon="pi pi-check" class="p-button-success" (click)="saveTask()"></button>
-      </div>
+      <ng-template pTemplate="footer">
+        <button pButton label="Cancel" class="p-button-outlined"
+                (click)="taskDialog = false"></button>
+        <button pButton label="Save" class="save-btn"
+                (click)="saveTask()"></button>
+      </ng-template>
     </p-dialog>
 
-    <!-- Toast Notifications -->
     <p-toast></p-toast>
 
-    <!-- Confirmation Dialog -->
     <p-confirmDialog
       header="Confirm Deletion"
       icon="pi pi-exclamation-triangle"

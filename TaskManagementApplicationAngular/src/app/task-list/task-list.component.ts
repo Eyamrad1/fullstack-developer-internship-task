@@ -46,6 +46,16 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         style({ opacity: 1 }),
         animate('200ms', style({ opacity: 0 }))
       ])
+    ]),
+
+    trigger('newTask', [
+      transition('void => new', [
+        style({ transform: 'scale(0.95)' }),
+        animate('0.3s ease',
+          style({ transform: 'scale(1.05)' })),
+        animate('0.2s ease',
+          style({ transform: 'scale(1)' }))
+      ])
     ])
   ]
 })
@@ -56,11 +66,17 @@ export class TaskListComponent implements OnInit {
   task: Task = this.createEmptyTask();
   displayConfirmDialog: boolean = false;
   selectedTask: Task = this.createEmptyTask();
-  totalRecords: number = 0; // Total number of tasks
-  first: number = 0; // Tracks the current page
+  totalRecords: number = 0;
+  first: number = 0;
   filteredTasks: Task[] = [];
-  filterStatus: string = ''; // To store filter status value (e.g., 'Completed', 'Pending')
 
+  statusOptions = [
+    { label: 'All', value: null },
+    { label: 'Completed', value: true },
+    { label: 'Pending', value: false }
+  ];
+  selectedStatus: any = null;
+  searchText: string = '';
   @ViewChild('cd') confirmDialog: any;
 
   constructor(
@@ -77,48 +93,40 @@ export class TaskListComponent implements OnInit {
     this.taskService.getAllTasks().subscribe({
       next: (data) => {
         this.tasks = data;
-        this.filteredTasks = [...this.tasks]; // Initialize filtered tasks
+        this.filterTasks();
       },
       error: () => this.showMessage('error', 'Error', 'Failed to load tasks'),
     });
   }
 
-  // Filter tasks based on input field and status
-  onFilter(event: any, field: keyof Task) {
-    const filterValue = event.target.value.trim().toLowerCase();
-    this.filteredTasks = this.tasks.filter((task) => {
-      if (field === 'completed') {
-        return task[field] === (filterValue === 'completed'); // Handle 'completed' status filtering
-      } else {
-        return task[field]?.toString().toLowerCase().includes(filterValue);
-      }
+  filterTasks() {
+    this.filteredTasks = this.tasks.filter(task => {
+      const matchesStatus = this.selectedStatus === null ||
+        task.completed === this.selectedStatus;
+      const matchesSearch = task.name.toLowerCase().includes(this.searchText.toLowerCase());
+      return matchesStatus && matchesSearch;
     });
+
+    this.totalRecords = this.filteredTasks.length;
   }
 
-  // Sorting the tasks by status (Completed/Pending)
-  sortByStatus() {
-    this.filteredTasks.sort((a, b) => {
-      if (a.completed === b.completed) return 0;
-      return a.completed ? -1 : 1; // Sorting completed tasks first
-    });
+  onSearch(event: Event) {
+    this.searchText = (event.target as HTMLInputElement).value;
+    this.filterTasks();
   }
 
-
-  // Replace toggleCompletion with onStatusChange
   onStatusChange(task: Task, newStatus: boolean): void {
     const originalStatus = task.completed;
     task.completed = newStatus;
-
     this.taskService.updateTask(task.id!, task).subscribe({
-      next: () => {
-        this.showMessage('success', 'Success', `Task marked as ${newStatus ? 'completed' : 'pending'}`);
-      },
+      next: () => this.showMessage('success', 'Success', `Task marked as ${newStatus ? 'completed' : 'pending'}`),
       error: () => {
         task.completed = originalStatus;
         this.showMessage('error', 'Error', 'Failed to update task status');
       },
     });
   }
+
   saveTask() {
     if (!this.task.name.trim()) {
       this.showMessage('warn', 'Warning', 'Task name is required');
@@ -126,6 +134,7 @@ export class TaskListComponent implements OnInit {
     }
 
     if (this.task.id) {
+      // Update existing task
       this.taskService.updateTask(this.task.id, this.task).subscribe({
         next: () => {
           this.loadTasks();
@@ -135,29 +144,38 @@ export class TaskListComponent implements OnInit {
         error: () => this.showMessage('error', 'Error', 'Failed to update task'),
       });
     } else {
+      // Create new task
       this.taskService.createTask(this.task).subscribe({
-        next: (newTask) => {
-          this.tasks.push(newTask);
+        next: () => {
+          this.loadTasks();
           this.taskDialog = false;
           this.showMessage('success', 'Success', 'Task created successfully');
         },
         error: () => this.showMessage('error', 'Error', 'Failed to create task'),
       });
+
     }
+    if (this.task.id) {
+      delete this.task.isNew;}
   }
+
 
   openNewTaskDialog() {
     this.task = this.createEmptyTask();
     this.taskDialog = true;
   }
 
+
+  //the ...task is creating a copy for the selected task until the user save the changes
   editTask(task: Task) {
     this.task = { ...task };
     this.taskDialog = true;
   }
 
+
+  //confirmDialog for the delete task
   confirmDelete(task: Task) {
-    this.selectedTask = task; // Ensure selected task is assigned
+    this.selectedTask = task;
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this task?',
       accept: () => {
@@ -169,50 +187,56 @@ export class TaskListComponent implements OnInit {
     });
   }
 
+
+
   onDeleteConfirmed() {
     if (this.selectedTask?.id) {
       this.deleteTask(this.selectedTask);
     } else {
       this.showMessage('error', 'Error', 'No task selected');
     }
-    this.displayConfirmDialog = false; // Close dialog after confirming
+    this.displayConfirmDialog = false;
   }
 
   onDeleteCancelled() {
-    this.displayConfirmDialog = false; // Close dialog if rejected
+    this.displayConfirmDialog = false;
   }
 
   deleteTask(task: Task) {
     if (task.id) {
-      console.log('Deleting task ID:', task.id, typeof task.id); // Debug log
-
       this.taskService.deleteTaskById(task.id).subscribe({
         next: () => {
-          // Filter out the deleted task IMMEDIATELY
+          // Update both main and filtered tasks
           this.tasks = this.tasks.filter((t) => t.id !== task.id);
+          this.filterTasks();
+
           this.showMessage('success', 'Success', 'Task deleted successfully');
         },
         error: (err) => {
           console.error('Delete error:', err);
           this.showMessage('error', 'Error', 'Failed to delete task');
-
-          // Reload tasks as fallback
-          this.loadTasks();
+          this.loadTasks(); // Fallback refresh
         }
       });
     } else {
       this.showMessage('error', 'Error', 'Task ID is missing');
     }
   }
+
+
   showMessage(severity: string, summary: string, detail: string) {
     this.messageService.add({ severity, summary, detail });
   }
 
+
+
+//display a form that's not pre-populated with any existing task data
   createEmptyTask(): Task {
     return {
       id: undefined,
       name: '',
       completed: false,
+      isNew: true
     };
   }
 
