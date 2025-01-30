@@ -1,12 +1,7 @@
 # Task Management Application
 
 ## Overview
-This is a **Full-Stack Task Management Application** built using **Angular, Spring Boot, and PrimeNG**.  
-The application allows users to manage tasks efficiently with features like:
-
-- Creating, updating, and deleting tasks  
-- Marking tasks as completed  
-- Filtering and sorting tasks  
+This is a Full-Stack Task Management Application built using Angular, Spring Boot, and PrimeNG. The application allows users to efficiently manage tasks with features like creating, updating, deleting, and marking tasks as completed. The frontend is developed using Angular with PrimeNG, while the backend is powered by Spring Boot.
 
 ## Features
 
