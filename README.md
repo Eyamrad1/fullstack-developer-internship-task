@@ -14,6 +14,7 @@ This is a Full-Stack Task Management Application built using Angular, Spring Boo
 ![Capture d'écran 2025-01-29 201246](https://github.com/user-attachments/assets/b25732fd-19c7-4018-9c12-3307f908961e)
 ![Capture d'écran 2025-01-29 201205](https://github.com/user-attachments/assets/6a153429-091e-4a34-8cef-5032c9176a84)
 ![Capture d'écran 2025-01-28 133637](https://github.com/user-attachments/assets/2cabfca5-9467-47d4-93c7-fec1737744d3)
+![Capture d'écran 2025-01-29 205049](https://github.com/user-attachments/assets/c9068691-4d6c-4172-9be8-265f777fa574)
 
 
 ### Backend (Spring Boot)
